@@ -1,5 +1,7 @@
 #Eesti keele HTS-kõnesüntesaator
 
+Mingi rida
+
 /* ----------------------------------------------------------------- */
 /*           The HMM-Based Speech Synthesis Engine "hts_engine API"  */
 /*           developed by HTS Working Group                          */
