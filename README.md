@@ -1,4 +1,4 @@
-#Eesti keele HTS-kõnesüntesaator
+###Eesti keele HTS-kõnesüntesaator
 
            The HMM-Based Speech Synthesis Engine "hts_engine API"  
            developed by HTS Working Group                          
