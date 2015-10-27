@@ -56,3 +56,12 @@
         ./configure
         make
 
+
+==============================================================================
+####Kasutamine:<br>
+
+		-f 		[sisendtekst utf8-s] 
+		-o 		[väljund-wav] 
+		-lex 	[analüüsi sõnastik] 
+		-lexd	[ühestaja sõnastik] 
+		-m 		[hääle nimi, vt kataloogi htsvoices/]
