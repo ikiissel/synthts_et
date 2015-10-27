@@ -76,7 +76,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = synthhts_et$(EXEEXT)
+bin_PROGRAMS = synthts_et$(EXEEXT)
 subdir = bin
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/config/depcomp
@@ -89,12 +89,12 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_synthhts_et_OBJECTS = hts_engine.$(OBJEXT)
-synthhts_et_OBJECTS = $(am_synthhts_et_OBJECTS)
-synthhts_et_DEPENDENCIES = ../etana/libEtAna.a ../fsc/libFsc.a \
+am_synthts_et_OBJECTS = hts_engine.$(OBJEXT)
+synthts_et_OBJECTS = $(am_synthts_et_OBJECTS)
+synthts_et_DEPENDENCIES = ../etana/libEtAna.a ../fsc/libFsc.a \
 	../lib/libHTSEngine.a ../lib_utt/libEtLab.a
-synthhts_et_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(synthhts_et_LDFLAGS) $(LDFLAGS) -o $@
+synthts_et_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(synthts_et_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -124,8 +124,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(synthhts_et_SOURCES)
-DIST_SOURCES = $(synthhts_et_SOURCES)
+SOURCES = $(synthts_et_SOURCES)
+DIST_SOURCES = $(synthts_et_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -246,9 +246,9 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = Makefile.mak
 INCLUDES = -I$(top_srcdir)/include
-synthhts_et_SOURCES = hts_engine.cpp 
-synthhts_et_LDFLAGS = -static -pthread
-synthhts_et_LDADD = ../etana/libEtAna.a ../fsc/libFsc.a ../lib/libHTSEngine.a ../lib_utt/libEtLab.a
+synthts_et_SOURCES = hts_engine.cpp 
+synthts_et_LDFLAGS = -static -pthread
+synthts_et_LDADD = ../etana/libEtAna.a ../fsc/libFsc.a ../lib/libHTSEngine.a ../lib_utt/libEtLab.a
 DISTCLEANFILES = *.log *.out *~
 MAINTAINERCLEANFILES = Makefile.in
 all: all-am
@@ -328,9 +328,9 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-synthhts_et$(EXEEXT): $(synthhts_et_OBJECTS) $(synthhts_et_DEPENDENCIES) $(EXTRA_synthhts_et_DEPENDENCIES) 
-	@rm -f synthhts_et$(EXEEXT)
-	$(AM_V_CXXLD)$(synthhts_et_LINK) $(synthhts_et_OBJECTS) $(synthhts_et_LDADD) $(LIBS)
+synthts_et$(EXEEXT): $(synthts_et_OBJECTS) $(synthts_et_DEPENDENCIES) $(EXTRA_synthts_et_DEPENDENCIES) 
+	@rm -f synthts_et$(EXEEXT)
+	$(AM_V_CXXLD)$(synthts_et_LINK) $(synthts_et_OBJECTS) $(synthts_et_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

@@ -80,8 +80,7 @@ subdir = .
 DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
 	$(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
-	$(include_HEADERS) COPYING config/compile config/config.guess \
-	config/config.sub config/depcomp config/install-sh \
+	$(include_HEADERS) COPYING config/compile config/install-sh \
 	config/missing $(top_srcdir)/config/compile \
 	$(top_srcdir)/config/install-sh $(top_srcdir)/config/missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
