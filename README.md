@@ -48,7 +48,8 @@
                          Indrek Kiissel                            
 
 ==============================================================================
-###Installimine:<br>
+#####Installimine:<br>
+=
 Peale lahtipakkimist<br>
 =
         cd synthts\_et-master/synthts\_et
