@@ -12,8 +12,7 @@ Mingi rida
            Redistribution and use in source and binary forms, with or
            without modification, are permitted provided that the following
            conditions are met:
-
-					- Redistributions of source code must retain the above copyright
+          - Redistributions of source code must retain the above copyright
             notice, this list of conditions and the following disclaimer.
           - Redistributions in binary form must reproduce the above
             copyright notice, this list of conditions and the following
@@ -38,16 +37,17 @@ Mingi rida
            POSSIBILITY OF SUCH DAMAGE.
 
 
-/* ----------------------------------------------------------------- */
-/*             Morfoloogiline analüsaator ja ühestaja                */
-/*                 Copyright (c) 2015, Filosoft                      */
-/*              https://github.com/Filosoft/vabamorf                 */
-/* ----------------------------------------------------------------- */
+==============================================================================
+
+             Morfoloogiline analüsaator ja ühestaja                
+                 Copyright (c) 2015, Filosoft                      
+              https://github.com/Filosoft/vabamorf                 
 
 
-/* ----------------------------------------------------------------- */
-/*                   Eesti keele HTS-kõnesüntees                     */
-/*             Copyright (c) 2015 Eesti Keele Instituut              */
-/*                         Indrek Kiissel                            */
-/* ----------------------------------------------------------------- */
+==============================================================================
+
+                   Eesti keele HTS-kõnesüntees                     
+             Copyright (c) 2015 Eesti Keele Instituut              
+                         Indrek Kiissel                            
+
 
