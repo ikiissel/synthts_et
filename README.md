@@ -50,7 +50,10 @@
 ==============================================================================
 Installimine:
 Peale lahtipakkimist
+
 cd synthts_et-master
+
 ./configure
+
 make
 
