@@ -1,1 +1,1 @@
-#Eesti keele HTS-kõnesüntesaator.
+#Eesti keele HTS-kõnesüntesaator
