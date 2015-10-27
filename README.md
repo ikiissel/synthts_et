@@ -48,8 +48,9 @@
                          Indrek Kiissel                            
 
 ==============================================================================
-Installimine:<br>
-Peale lahtipakkimist
+###Installimine:<br>
+Peale lahtipakkimist<br>
+=
         cd synthts\_et-master/synthts\_et
         ./configure
         make
