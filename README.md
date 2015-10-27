@@ -1,8 +1,5 @@
 #Eesti keele HTS-kõnesüntesaator
 
-Mingi rida
-
-
            The HMM-Based Speech Synthesis Engine "hts_engine API"  
            developed by HTS Working Group                          
            http://hts-engine.sourceforge.net/                      
@@ -50,4 +47,10 @@ Mingi rida
              Copyright (c) 2015 Eesti Keele Instituut              
                          Indrek Kiissel                            
 
+==============================================================================
+Installimine:
+Peale lahtipakkimist
+	cd synthts_et-master
+	./configure
+	make
 
