@@ -50,9 +50,9 @@
 ==============================================================================
 ####Installimine:<br>
 
-		Peale lahtipakkimist<br>
+		Peale lahtipakkimist
 
-        cd synthts\_et-master/synthts\_et
+        cd synthts_et-master/synthts_et
         ./configure
         make
 
