@@ -48,10 +48,10 @@
                          Indrek Kiissel                            
 
 ==============================================================================
-Installimine:
+Installimine:<br>
 Peale lahtipakkimist
 
-cd synthts_et-master
+cd synthts\_et-master/synthts\_et
 
 ./configure
 
