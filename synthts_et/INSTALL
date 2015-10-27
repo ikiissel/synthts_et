@@ -1,0 +1,16 @@
+Installation Instructions
+*************************
+
+1. Run configure script with appropriate options.
+
+   % ./configure
+
+   For detail, please see.
+
+   % ./configure --help
+
+2. Run make.
+
+   % make
+
+
