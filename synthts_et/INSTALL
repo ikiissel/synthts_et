@@ -1,7 +1,9 @@
 Installation Instructions
 *************************
 
-1. Run configure script with appropriate options.
+1. Unpacking the tar.gz file
+
+2. Run configure script with appropriate options.
 
    % ./configure
 
@@ -9,8 +11,10 @@ Installation Instructions
 
    % ./configure --help
 
-2. Run make.
+3. Run make.
 
    % make
 
+4. Install library and binary.
 
+   % make install

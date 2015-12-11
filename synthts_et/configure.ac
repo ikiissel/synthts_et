@@ -2,9 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(synthts_et, 0.01, indrek.kiissel@eki.ee)
+AC_INIT(synthts_et, 0.01)
 AC_CONFIG_AUX_DIR([config])
-AM_INIT_AUTOMAKE(synthts_et, 0.01, nostdinc no-installinfo no-installman)
+AM_INIT_AUTOMAKE
 
 # Checks for C compiler
 AC_PROG_CXX
@@ -46,18 +46,7 @@ else
 fi
 
 
-
-# Checks library for windows audio devices
-case "$host_os" in
- *win32* | *wince* | *cygwin* | *mingw* )
-	AC_HAVE_LIBRARY([winmm],,AC_MSG_ERROR(No winmm))
-	;;
- *)
-	;;
-esac
-
-
-AC_CONFIG_FILES([Makefile bin/Makefile lib/Makefile lib_utt/Makefile] fsc/Makefile etana/Makefile)
+AC_CONFIG_FILES([Makefile bin/Makefile lib/engine/Makefile lib/label/Makefile lib/fsc/Makefile lib/etana/Makefile])
 
 AC_OUTPUT
 

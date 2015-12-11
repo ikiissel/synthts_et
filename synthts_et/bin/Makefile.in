@@ -14,6 +14,10 @@
 
 @SET_MAKE@
 
+#EXTRA_DIST = Makefile.mak
+
+#INCLUDES = -I$(top_srcdir)/include
+
 VPATH = @srcdir@
 am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'
 am__make_running_with_option = \
@@ -89,10 +93,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_synthts_et_OBJECTS = hts_engine.$(OBJEXT)
+am_synthts_et_OBJECTS = synthts_et.$(OBJEXT)
 synthts_et_OBJECTS = $(am_synthts_et_OBJECTS)
-synthts_et_DEPENDENCIES = ../etana/libEtAna.a ../fsc/libFsc.a \
-	../lib/libHTSEngine.a ../lib_utt/libEtLab.a
+synthts_et_DEPENDENCIES = ../lib/etana/libEtAna.a ../lib/fsc/libFsc.a \
+	../lib/engine/libHTSEngine.a ../lib/label/libEtLab.a
 synthts_et_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(synthts_et_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
@@ -244,11 +248,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = Makefile.mak
-INCLUDES = -I$(top_srcdir)/include
-synthts_et_SOURCES = hts_engine.cpp 
-synthts_et_LDFLAGS = -static -pthread
-synthts_et_LDADD = ../etana/libEtAna.a ../fsc/libFsc.a ../lib/libHTSEngine.a ../lib_utt/libEtLab.a
+synthts_et_SOURCES = synthts_et.cpp 
+synthts_et_LDFLAGS = -pthread
+synthts_et_LDADD = ../lib/etana/libEtAna.a ../lib/fsc/libFsc.a ../lib/engine/libHTSEngine.a ../lib/label/libEtLab.a
 DISTCLEANFILES = *.log *.out *~
 MAINTAINERCLEANFILES = Makefile.in
 all: all-am
@@ -338,7 +340,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hts_engine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/synthts_et.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

@@ -1,9 +1,9 @@
 
-EXTRA_DIST = AUTHORS COPYING ChangeLog INSTALL NEWS README Makefile.mak
+#EXTRA_DIST = AUTHORS COPYING ChangeLog INSTALL NEWS README Makefile.mak
 
-SUBDIRS = lib lib_utt fsc etana bin
+SUBDIRS = lib/engine lib/label/ lib/fsc lib/etana bin
 
-include_HEADERS = include/HTS_engine.h etana/proof.h
+#include_HEADERS = include/HTS_engine.h lib/etana/proof.h
 
 DISTCLEANFILES = *.log *.out *~ config/*~ include/*~
 
