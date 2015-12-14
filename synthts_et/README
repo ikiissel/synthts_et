@@ -1,5 +1,3 @@
-###Eesti keele HTS-kõnesüntesaator
-
            The HMM-Based Speech Synthesis Engine "hts_engine API"  
            developed by HTS Working Group                          
            http://hts-engine.sourceforge.net/                      
@@ -48,7 +46,6 @@
                          Indrek Kiissel                            
 
 ==============================================================================
-####Installimine:<br>
 
 		Peale lahtipakkimist
 
@@ -58,7 +55,7 @@
 
 
 ==============================================================================
-####Kasutamine:<br>
+
 
 		-f 		[sisendtekst utf8-s] 
 		-o 		[väljund-wav] 
