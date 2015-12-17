@@ -50,7 +50,7 @@
 ==============================================================================
 ####Installimine:<br>
 
-		Peale lahtipakkimist
+    	Peale lahtipakkimist
 
         cd synthts_et-master/synthts_et
         ./configure
