@@ -11,6 +11,7 @@ CFSWString DealWithText(CFSWString text) {
     /* Proovin kogu sõnniku minema loopida */
     CFSWString res;
     text.Trim();
+    text.Replace(L"\n\n", L"\n", 1);
     for (INTPTR i = 0; i < text.GetLength(); i++) {
         CFSWString c = text.GetAt(i);
         CFSWString pc = res.GetAt(res.GetLength() - 1);
