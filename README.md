@@ -67,4 +67,4 @@
 		-m 		[hääle nimi, vt kataloogi htsvoices/]
 		
 		näide:
-		bin/synthts_et -lex dct/et.dct -lexd dct/et3.dct -m htsvoices/eki_et_tnu.htsvoice -o valjund.wav -f sisend.txt
+		bin/synthts_et -lex dct/et.dct -lexd dct/et3.dct -o tulemus.wav -f in.txt -m htsvoices/eki_et_tnu.htsvoice
