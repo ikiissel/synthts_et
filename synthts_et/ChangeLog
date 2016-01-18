@@ -1,5 +1,8 @@
 2016-01-11  ikiissel
-
 	* ChangeLog, run.sh, eki_et_eva.htsvoice
 	  eki_et_eva voicefile bug fixed
+	  
+2016-01-18  ikiissel
+	* ChangeLog, run.sh, eki_et_lis.htsvoice synthts_et.cpp
+	  added eki_et_lis.htsvoice, synthts_et.cpp minor bugs fixed
 

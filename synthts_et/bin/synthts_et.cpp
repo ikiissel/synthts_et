@@ -109,8 +109,6 @@ void cfileexists(const char * filename) {
 }
 
 int main(int argc, char* argv[]) {
-    //std::cout << "\n";
-    //std::cout << std::flush;
     size_t num_voices;
     char **fn_voices;
     char* in_fname;
@@ -172,7 +170,7 @@ int main(int argc, char* argv[]) {
             if (i + 1 < argc) {
                 in_fname = argv[i + 1];
             } else {
-                std::cerr << "puudb väljundfaili nimi" << std::endl;
+                std::cerr << "puudb sisendfaili nimi" << std::endl;
                 exit(0);
             }
         }
@@ -210,7 +208,7 @@ int main(int argc, char* argv[]) {
 		HTS_Engine_set_parameter_interpolation_weight(&engine, 0, 1, piw2);
 		HTS_Engine_set_gv_interpolation_weight(&engine, 0, 0, giw1);
 		HTS_Engine_set_gv_interpolation_weight(&engine, 0, 1, giw2);
-     */
+    */
     HTS_Engine_set_gv_weight(&engine, 0, gvw1);
     HTS_Engine_set_gv_weight(&engine, 1, gvw2);
 
@@ -247,8 +245,8 @@ int main(int argc, char* argv[]) {
         HTS_Engine_refresh(&engine);
 
     } //synth loop
+    
     fclose(tmpfp);
-
     tmpfp = fopen(temp_fname, "rb");
     outfp = fopen(output_fname, "wb");
     HTS_Engine_write_header(&engine, outfp, data_size);
@@ -270,22 +268,7 @@ int main(int argc, char* argv[]) {
     FSCTerminate();
     return 0;
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
