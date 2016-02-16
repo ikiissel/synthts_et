@@ -45,7 +45,10 @@
 
                    Eesti keele HTS-kõnesüntees                     
              Copyright (c) 2015 Eesti Keele Instituut              
-                         Indrek Kiissel                            
+                         Indrek Kiissel
+             
+             HTK-3.4.1, HTS-2.3alpha.patch, HTS-engine_API_1.08
+             	                                        
 
 ==============================================================================
 ####Installimine:<br>
