@@ -377,7 +377,7 @@ CFSArray<CFSWString> do_label(utterance_struct &utt) {
     add_pauses(utt);
 
     CFSArray<phone_struct> pa = make_phone_array(utt);
-    
+
     CFSArray<CFSWString> res = make_label(pa);
 
     return res;

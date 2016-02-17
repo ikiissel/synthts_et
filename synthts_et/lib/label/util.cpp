@@ -1,5 +1,7 @@
 #include <iostream>
 #include "../etana/proof.h"
+#include "util.h"
+
 
 bool is_lvowel (CFSWString c) {
 	if (c.FindOneOf(L"aeiouõäöü") > -1)	return true;
@@ -37,7 +39,7 @@ bool is_break (CFSWString c) {
 }
 
 bool is_space (CFSWString c) {
-	if (c.FindOneOf(L" ") > -1)	return true;
+	if (c.FindOneOf(sp) > -1)	return true;
 		return false;
 }
 
@@ -138,6 +140,13 @@ bool is_compound_word (CFSWString c) {
 		return false;
 }
 
+bool is_upper_word (CFSWString c) {
+		for (INTPTR i = 0; i < c.GetLength(); i++)
+			if (!is_upper(c.GetAt(i))) return false;
+		return true;
+}
+
+
 bool is_fsymbol (CFSWString c) { //ainult tüübiarray jaoks
 	if (is_symbol(c) || is_ending(c) || is_colon(c) || is_dash(c) || is_hyphen(c) || is_comma(c))	return true;
 		return false;
@@ -217,45 +226,178 @@ CMorphInfo clean_anaroot_output (CMorphInfo MI) {
 
 
 
-void Print (CFSWString label, CFSWString s) {
-	wprintf(L"\n<");
-	wprintf(label);
-	wprintf(L">");
-	wprintf(s);
-	wprintf(L"\n");
-
-}
-void PRINDI_YHESTAMINE (CFSArray<CMorphInfo> A) {
-		wprintf (L"\n\n\t\tYhestamine(%i)\t\t\n\t\t-------------------\n", A.GetSize());
-		for (INTPTR ipRes=0; ipRes<A.GetSize(); ipRes++) {
-			wprintf (L"\t\t");
-			wprintf (A[ipRes].m_szRoot);			
-			wprintf (L" [");
-			wprintf (A[ipRes].m_szForm);			
-			wprintf (L"] [");
-			wprintf (CFSWString(A[ipRes].m_cPOS));
-	
-			
-			wprintf (L"]\n");				
-			}
-//wprintf (L"\t\t-------------------\n");
-}
-
-void PrintAnalyze(CMorphInfo ai) {
-		wprintf (L"root: ");
-		wprintf (ai.m_szRoot);
-		wprintf (L"\tpos: ");
-		wprintf (CFSWString(ai.m_cPOS));
-		wprintf (L"\tform: ");
-		wprintf (CFSWString(ai.m_szForm));
-		wprintf (L"\tend: ");
-		wprintf (CFSWString(ai.m_szEnding));
-		wprintf (L"\tclit: ");
-		wprintf (CFSWString(ai.m_szClitic));
-		wprintf (L"\n\n");
+const char* ccstr (CFSWString s) {
+    return FSStrWtoA(s, FSCP_UTF8);
 }
 
 
+INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
+    // Lühendid EKRst
+    if (s.GetAt(s.GetLength() - 1) == L'.') s.Delete(s.GetLength() - 1, 1);
+    if (s == L"aj") return explode(L"ajutine", sp, a);
+    if (s == L"ak") return explode(L"arvelduskonto", sp, a);
+    if (s == L"apr") return explode(L"aprill", sp, a);
+    if (s == L"AS") return explode(L"aktsiaselts", sp, a);
+    if (s == L"aug") return explode(L"august", sp, a);
+    if (s == L"aü") return explode(L"ametiühing", sp, a);
+    if (s == L"dets") return explode(L"detsember", sp, a);
+    if (s == L"dl") return explode(L"dessertlusikatäis", sp, a);
+    if (s == L"dots") return explode(L"dotsent", sp, a);
+    if (s == L"dr") return explode(L"doktor", sp, a);
+    if (s == L"e") return explode(L"ehk", sp, a);
+    if (s == L"E") return explode(L"esmaspäev", sp, a);
+    if (s == L"eKr") return explode(L"enne Kristuse sündi", sp, a);
+    if (s == L"EL") return explode(L"Euroopa Liit", sp, a);
+    if (s == L"e.m.a") return explode(L"enne meie ajaarvamist", sp, a);
+    if (s == L"end") return explode(L"endine", sp, a);
+    if (s == L"FIE") return explode(L"füüsilisest isikust ettevõtja", sp, a);
+    if (s == L"hr") return explode(L"härra", sp, a);
+    if (s == L"hrl") return explode(L"harilikult", sp, a);
+    if (s == L"ik") return explode(L"isikukood", sp, a);
+    if (s == L"ins") return explode(L"insener", sp, a);
+    if (s == L"it") return explode(L"infotehnoloogia", sp, a);
+    if (s == L"IT") return explode(L"infotehnoloogia", sp, a);
+    if (s == L"j.a") return explode(L"juures asuv", sp, a);
+    if (s == L"jaan") return explode(L"jaanuar", sp, a);
+    if (s == L"jj") return explode(L"ja järgmine", sp, a);
+    if (s == L"jm") return explode(L"ja muud", sp, a);
+    if (s == L"jms") return explode(L"ja muud sellised", sp, a);
+    if (s == L"jmt") return explode(L"ja mitmed teised", sp, a);
+    if (s == L"jn") return explode(L"joonis", sp, a);
+    if (s == L"jne") return explode(L"ja nii edasi", sp, a);
+    if (s == L"jpt") return explode(L"ja paljud teised", sp, a);
+    if (s == L"jr") return explode(L"juunior", sp, a);
+    if (s == L"jrk") return explode(L"järjekord", sp, a);
+    if (s == L"jsk") return explode(L"jaoskond", sp, a);
+    if (s == L"jt") return explode(L"ja teised", sp, a);
+    if (s == L"juh") return explode(L"juhataja", sp, a);
+    if (s == L"jun") return explode(L"juunior", sp, a);
+    if (s == L"jv") return explode(L"järv", sp, a);
+    if (s == L"K") return explode(L"kolmapäev", sp, a);
+    if (s == L"k.a") return explode(L"kaasa arvatud", sp, a);
+    if (s == L"kd") return explode(L"köide", sp, a);
+    if (s == L"khk") return explode(L"kihelkond", sp, a);
+    if (s == L"kk") return explode(L"keskkool", sp, a);
+    if (s == L"kl") return explode(L"kell", sp, a);
+    if (s == L"knd") return explode(L"kandidaat", sp, a);
+    if (s == L"kod") return explode(L"kodanik", sp, a);
+    if (s == L"kpl") return explode(L"kauplus", sp, a);
+    if (s == L"kr") return explode(L"kroon", sp, a);
+    if (s == L"kt") return explode(L"kohusetäitja", sp, a);
+    if (s == L"kub") return explode(L"kubermang", sp, a);
+    if (s == L"kv") return explode(L"kvartal", sp, a);
+    if (s == L"KÜ") return explode(L"korteriühistu", sp, a);
+    if (s == L"l") return explode(L"liiter", sp, a);
+    if (s == L"L") return explode(L"laupäev", sp, a);
+    if (s == L"lg") return explode(L"lõige", sp, a);
+    if (s == L"lj") return explode(L"linnajagu", sp, a);
+    if (s == L"lk") return explode(L"lehekülg", sp, a);
+    if (s == L"LK") return explode(L"looduskaitse all", sp, a);
+    if (s == L"lm") return explode(L"liidumaa", sp, a);
+    if (s == L"lo") return explode(L"linnaosa", sp, a);
+    if (s == L"lp") return explode(L"lugupeetud", sp, a);
+    if (s == L"lüh") return explode(L"lühemalt", sp, a);
+    if (s == L"M") return explode(L"meestele", sp, a);
+    if (s == L"mag") return explode(L"magister", sp, a);
+    if (s == L"m.a.j") return explode(L"meie ajaarvamise järgi", sp, a);
+    if (s == L"min") return explode(L"minut", sp, a);
+    if (s == L"mk") return explode(L"maakond", sp, a);
+    if (s == L"mld") return explode(L"miljard", sp, a);
+    if (s == L"mln") return explode(L"miljon", sp, a);
+    if (s == L"mnt") return explode(L"maantee", sp, a);
+    if (s == L"mob") return explode(L"mobiiltelefon", sp, a);
+    if (s == L"ms") return explode(L"muuseas", sp, a);
+    if (s == L"MTÜ") return explode(L"mittetulundusühing", sp, a);
+    if (s == L"N") return explode(L"neljapäev", sp, a);
+    if (s == L"nim") return explode(L"nimeline", sp, a);
+    if (s == L"nn") return explode(L"niinimetatud", sp, a);
+    if (s == L"nov") return explode(L"november", sp, a);
+    if (s == L"nr") return explode(L"number", sp, a);
+    if (s == L"nt") return explode(L"näiteks", sp, a);
+    if (s == L"nö") return explode(L"nii öelda", sp, a);
+    if (s == L"okt") return explode(L"oktoober", sp, a);
+    if (s == L"osk") return explode(L"osakond", sp, a);
+    if (s == L"OÜ") return explode(L"osaühing", sp, a);
+    if (s == L"P") return explode(L"pühapäev", sp, a);
+    if (s == L"pa") return explode(L"poolaasta", sp, a);
+    if (s == L"pk") return explode(L"postkast", sp, a);
+    if (s == L"pKr") return explode(L"pärast Kristuse sündi", sp, a);
+    if (s == L"pms") return explode(L"peamiselt", sp, a);
+    if (s == L"p.o") return explode(L"peab olema", sp, a);
+    if (s == L"pr") return explode(L"proua", sp, a);
+    if (s == L"prl") return explode(L"preili", sp, a);
+    if (s == L"prof") return explode(L"professor", sp, a);
+    if (s == L"ps") return explode(L"poolsaar", sp, a);
+    if (s == L"pst") return explode(L"puiestee", sp, a);
+    if (s == L"ptk") return explode(L"peatükk", sp, a);
+    if (s == L"R") return explode(L"reede", sp, a);
+    if (s == L"raj") return explode(L"rajoon", sp, a);
+    if (s == L"rbl") return explode(L"rubla", sp, a);
+    if (s == L"RE") return explode(L"riigiettevõte", sp, a);
+    if (s == L"reg") return explode(L"registreerimis", sp, a);
+    if (s == L"rg") return explode(L"registri", sp, a);
+    if (s == L"rmtk") return explode(L"raamatukogu", sp, a);
+    if (s == L"rkl") return explode(L"riigikoguliige", sp, a);
+    if (s == L"rtj") return explode(L"raudteejaam", sp, a);
+    if (s == L"s") return explode(L"sekund", sp, a);
+    if (s == L"SA") return explode(L"sihtasutus", sp, a);
+    if (s == L"s.a") return explode(L"sel aastal", sp, a);
+    if (s == L"saj") return explode(L"sajand", sp, a);
+    if (s == L"sh") return explode(L"sealhulgas", sp, a);
+    if (s == L"sen") return explode(L"seenior", sp, a);
+    if (s == L"sept") return explode(L"september", sp, a);
+    if (s == L"skp") return explode(L"selle kuu päeval", sp, a);
+    if (s == L"spl") return explode(L"supilusikatäis", sp, a);
+    if (s == L"sl") return explode(L"supilusikatäis", sp, a);
+    if (s == L"sm") return explode(L"seltsimees", sp, a);
+    if (s == L"s.o") return explode(L"see on", sp, a);
+    if (s == L"s.t") return explode(L"see tähendab", sp, a);
+    if (s == L"st") return explode(L"see tähendab", sp, a);
+    if (s == L"stj") return explode(L"saatja", sp, a);
+    if (s == L"srn") return explode(L"surnud", sp, a);
+    if (s == L"sü") return explode(L"säilitusüksus", sp, a);
+    if (s == L"snd") return explode(L"sündinud", sp, a);
+    if (s == L"t") return explode(L"tonn", sp, a);
+    if (s == L"T") return explode(L"teisipäev", sp, a);
+    if (s == L"tehn") return explode(L"tehniline", sp, a);
+    if (s == L"tel") return explode(L"telefon", sp, a);
+    if (s == L"tk") return explode(L"tükk(i)", sp, a);
+    if (s == L"tl") return explode(L"teelusikatäis", sp, a);
+    if (s == L"tlk") return explode(L"tõlkija", sp, a);
+    if (s == L"Tln") return explode(L"Tallinn", sp, a);
+    if (s == L"tn") return explode(L"tänav", sp, a);
+    if (s == L"tr") return explode(L"trükk", sp, a);
+    if (s == L"Trt") return explode(L"Tartu", sp, a);
+    if (s == L"tv") return explode(L"televisioon", sp, a);
+    if (s == L"TV") return explode(L"televisioon", sp, a);
+    if (s == L"u") return explode(L"umbes", sp, a);
+    if (s == L"ukj") return explode(L"uue kalendri järgi", sp, a);
+    if (s == L"UÜ") return explode(L"usaldusühing", sp, a);
+    if (s == L"v") return explode(L"või", sp, a);
+    if (s == L"v.a") return explode(L"välja arvatud", sp, a);
+    if (s == L"van") return explode(L"vananenud", sp, a);
+    if (s == L"VE") return explode(L"väikeettevõte", sp, a);
+    if (s == L"veebr") return explode(L"veebruar", sp, a);
+    if (s == L"vkj") return explode(L"vana kalendri järgi", sp, a);
+    if (s == L"vm") return explode(L"või muu(d)", sp, a);
+    if (s == L"vms") return explode(L"või muu seesugune", sp, a);
+    if (s == L"vrd") return explode(L"võrdle", sp, a);
+    if (s == L"vt") return explode(L"vaata", sp, a);
+    if (s == L"õa") return explode(L"õppeaasta", sp, a);
+    if (s == L"õp") return explode(L"õpetaja", sp, a);
+    if (s == L"õpil") return explode(L"õpilane", sp, a);
+    if (s == L"ÄÜ") return explode(L"äriühing", sp, a);
+    if (s == L"ÜE") return explode(L"ühisettevõte", sp, a);
+    if (s == L"SEK") return explode(L"Rootsi kroon", sp, a);
+    if (s == L"NOK") return explode(L"Norra kroon", sp, a);
+    if (s == L"RUR") return explode(L"Vene rubla", sp, a);
+    if (s == L"USD") return explode(L"USA dollar", sp, a);
+    if (s == L"GBP") return explode(L"Inglise nael", sp, a);
+    if (s == L"LVL") return explode(L"Läti latt", sp, a);
+    if (s == L"LTL") return explode(L"Leedu litt", sp, a);
+    if (s == L"EEK") return explode(L"Eesti kroon", sp, a);
+    return 0;
+}
 
 
 CFSWString replace_fchar (CFSWString c) {

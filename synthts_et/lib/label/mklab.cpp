@@ -11,7 +11,7 @@ CFSWString DealWithText(CFSWString text) {
     /* Proovin kogu sõnniku minema loopida */
     CFSWString res;
     text.Trim();
-    text.Replace(L"\n\n", L"\n", 1);
+    text.Replace(L"\n\n", L"\n", 1);    
     for (INTPTR i = 0; i < text.GetLength(); i++) {
         CFSWString c = text.GetAt(i);
         CFSWString pc = res.GetAt(res.GetLength() - 1);
@@ -20,7 +20,7 @@ CFSWString DealWithText(CFSWString text) {
         else
             if (is_digit(c)) res += c;
         else
-            if (is_hyphen(c) && is_char(pc) && is_char(nc)) res += L" ";
+            if (is_hyphen(c) && is_char(pc) && is_char(nc)) res += sp;
         else
             if (is_symbol(c)) res += c;
         else
@@ -38,14 +38,17 @@ CFSWString DealWithText(CFSWString text) {
         else
             if (is_space(c) && !is_whitespace(pc)) res += c;
         else
-            if (is_break(c) && !is_break(nc)) res += c; //kahtlane
+            if (is_break(c) && !is_break(pc)) { 
+                
+                res += c;   
+            } //kahtlane
         else
             if (is_tab(c) && !is_whitespace(pc)) res += c;
         else
             if (is_ending(c) && !is_ending(pc) && !is_whitespace(pc)) res += c;
 
     }
-    res.Trim();
+    res.Trim();    
     return res;
 
 }
@@ -78,14 +81,21 @@ CFSArray<CFSWString> do_utterances(CFSWString s) {
                 res += c;
         }
     res.Trim();
-
+    
     if (res.GetLength() > 0) {
         while (is_ending(res.GetAt(res.GetLength() - 1))) {
             res.Delete(res.GetLength() - 1, 1);
         }
+        
         res_array.AddItem(res);
     }
 
+    for (INTPTR i=0; i < res_array.GetSize(); i++) {
+        if (is_ending(res_array[i].GetAt(res_array[i].GetLength()-1))) 
+            res_array[i].Delete(  res_array[i].GetLength()-1, 1   );
+
+    }
+    
     return res_array;
 }
 
@@ -104,17 +114,21 @@ bool is_word(CFSWString s) {
     return false;
 }
 
-CFSArray<CFSWString> tokens2words(CFSArray<CFSWString> a) {
 
+CFSArray<CFSWString> tokens2words(CFSArray<CFSWString> a) {
+    CFSArray<CFSWString> temp_array;
     CFSArray<CFSWString> res;
     for (INTPTR i = 0; i < a.GetSize(); i++) {
         CFSWString s = a[i];
-
-        if (is_word(s))
+        //fprintf(stderr, "\t%s\n", ccstr(s));
+        if (is_abbreviation(s, temp_array) > 0) {
+            for (INTPTR i = 0; i < temp_array.GetSize(); i++)
+                res.AddItem(temp_array[i]);
+        } else
+            if (is_word(s))
             res.AddItem(s);
         else {
             CFSArray<CFSWString> carray;
-            CFSArray<CFSWString> temp_array;
             make_ctype_array(s, carray);
             for (INTPTR ictype = 0; ictype < carray.GetSize(); ictype++) {
                 INTPTR c_type = ctype(carray[ictype].GetAt(0));
@@ -133,7 +147,7 @@ CFSArray<CFSWString> tokens2words(CFSArray<CFSWString> a) {
                 } else
                     if (c_type == 3) { //Numbrid
                     CFSWString nr = int_to_words(carray[ictype]);
-                    explode(nr, L" ", temp_array);
+                    explode(nr, sp, temp_array);
                     for (INTPTR i_temp = 0; i_temp < temp_array.GetSize(); i_temp++)
                         if (temp_array[i_temp].GetLength() > 0)
                             res.AddItem(temp_array[i_temp]);
@@ -165,7 +179,7 @@ void phrase2words(phrase_struct &p, CFSArray<CPTWord> &PTW) {
 
     for (INTPTR i = 0; i < word_array.GetSize(); i++) {
         p.s += word_array[i];
-        if (i < word_array.GetSize() - 1) p.s += L" ";
+        if (i < word_array.GetSize() - 1) p.s += sp;
         PTW.AddItem(word_array[i]); //.ToLower()); Kui väiketähtedeks, siis siin
     }
     p.word_c = word_array.GetSize();
@@ -202,7 +216,7 @@ INTPTR do_phrases(utterance_struct &u) {
         } else
             if (is_space(c)) { // komatud sidesõnad
             CFSWString tempm = u.s.Mid(i + 1, -1);
-            if (is_conju(tempm.Left(tempm.Find(L" "))) && res.GetLength() > 0) {
+            if (is_conju(tempm.Left(tempm.Find(sp))) && res.GetLength() > 0) {
                 push_ph_res(u, p, res);
             } else
                 res += c;
@@ -274,25 +288,17 @@ void do_phones(syl_struct &ss) {
 void print_u(utterance_struct u) {
     for (INTPTR i = 0; i < u.phr_vector.GetSize(); i++)
         for (INTPTR i1 = 0; i1 < u.phr_vector[i].word_vector.GetSize(); i1++) {
-            wprintf(u.phr_vector[i].word_vector[i1].mi.m_szRoot);
-            wprintf(L"\n");
-
-            wprintf(L"\n");
+            fprintf(stderr, "%s\n\n", ccstr(u.phr_vector[i].word_vector[i1].mi.m_szRoot));
             for (INTPTR i2 = 0; i2 < u.phr_vector[i].word_vector[i1].syl_vector.GetSize(); i2++) {
-
-                wprintf(u.phr_vector[i].word_vector[i1].syl_vector[i2].syl);
-                wprintf(L"\n");
+                fprintf(stderr, "\t%s\n", ccstr(u.phr_vector[i].word_vector[i1].syl_vector[i2].syl));
 
                 for (INTPTR i3 = 0; i3 < u.phr_vector[i].word_vector[i1].syl_vector[i2].phone_vector.GetSize(); i3++) {
                     CFSWString w = u.phr_vector[i].word_vector[i1].syl_vector[i2].phone_vector[i3].phone;
-                    while (w.GetLength() < 6) w += L" ";
-                    wprintf(w);
-                    wprintf(L"%i %i %i %i\t\t", u.phra_c, u.word_c, u.syl_c, u.phone_c
-                            );
+                    while (w.GetLength() < 6) w += sp;
+                    fprintf(stderr, "\t\t%s", ccstr(w));
+                    wprintf(L"%i %i %i %i\t\t", u.phra_c, u.word_c, u.syl_c, u.phone_c);
 
                     wprintf(L"%i %i %i [%i]\t", u.phr_vector[i].word_c, u.phr_vector[i].syl_c, u.phr_vector[i].phone_c, u.phr_vector[i].utt_p);
-
-
 
                     wprintf(L"%i %i [%i %i]\t", u.phr_vector[i].word_vector[i1].syl_c,
                             u.phr_vector[i].word_vector[i1].phone_c,
@@ -362,8 +368,10 @@ CFSArray<CFSWString> do_all(CFSWString utt) {
             w.phr_p = i1 + 1;
             w.mi = words[0];
             w.mi.m_szRoot += make_char_string(w.mi.m_szEnding) + w.mi.m_szClitic;
-
+            //fprintf (stderr, "%s\n", ccstr(w.mi.m_szRoot ));
             w.mi.m_szRoot = w.mi.m_szRoot.ToLower();
+            // sidesõnad + ei välteta
+            if ((CFSWString(w.mi.m_cPOS) == L"J") || (w.mi.m_szRoot == L"<ei")) w.mi.m_szRoot.Replace(L"<", L"", 1);
             do_syls(w);
             u.phr_vector[i].word_vector.AddItem(w);
 
@@ -400,7 +408,7 @@ CFSArray<CFSWString> do_all(CFSWString utt) {
 
 
 
- //   print_u(u);
+    //print_u(u);
     res = do_label(u);
     return res;
 }

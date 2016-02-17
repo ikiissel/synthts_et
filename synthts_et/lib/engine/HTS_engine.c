@@ -4,7 +4,7 @@
 /*           http://hts-engine.sourceforge.net/                      */
 /* ----------------------------------------------------------------- */
 /*                                                                   */
-/*  Copyright (c) 2001-2013  Nagoya Institute of Technology          */
+/*  Copyright (c) 2001-2015  Nagoya Institute of Technology          */
 /*                           Department of Computer Science          */
 /*                                                                   */
 /*                2001-2008  Tokyo Institute of Technology           */
@@ -151,16 +151,16 @@ HTS_Boolean HTS_Engine_load(HTS_Engine * engine, char **voices, size_t num_voice
    engine->condition.duration_iw = (double *) HTS_calloc(num_voices, sizeof(double));
    for (i = 0; i < num_voices; i++)
       engine->condition.duration_iw[i] = average_weight;
-   engine->condition.parameter_iw = (double **) HTS_calloc(nstream, sizeof(double *));
-   for (i = 0; i < nstream; i++) {
-      engine->condition.parameter_iw[i] = (double *) HTS_calloc(num_voices, sizeof(double));
-      for (j = 0; j < num_voices; j++)
+   engine->condition.parameter_iw = (double **) HTS_calloc(num_voices, sizeof(double *));
+   for (i = 0; i < num_voices; i++) {
+      engine->condition.parameter_iw[i] = (double *) HTS_calloc(nstream, sizeof(double));
+      for (j = 0; j < nstream; j++)
          engine->condition.parameter_iw[i][j] = average_weight;
    }
-   engine->condition.gv_iw = (double **) HTS_calloc(nstream, sizeof(double *));
-   for (i = 0; i < nstream; i++) {
-      engine->condition.gv_iw[i] = (double *) HTS_calloc(num_voices, sizeof(double));
-      for (j = 0; j < num_voices; j++)
+   engine->condition.gv_iw = (double **) HTS_calloc(num_voices, sizeof(double *));
+   for (i = 0; i < num_voices; i++) {
+      engine->condition.gv_iw[i] = (double *) HTS_calloc(nstream, sizeof(double));
+      for (j = 0; j < nstream; j++)
          engine->condition.gv_iw[i][j] = average_weight;
    }
 
@@ -393,6 +393,18 @@ size_t HTS_Engine_get_nstate(HTS_Engine * engine)
    return HTS_ModelSet_get_nstate(&engine->ms);
 }
 
+/* HTS_Engine_get_fullcontext_label_format: get full context label format */
+const char *HTS_Engine_get_fullcontext_label_format(HTS_Engine * engine)
+{
+   return HTS_ModelSet_get_fullcontext_label_format(&engine->ms);
+}
+
+/* HTS_Engine_get_fullcontext_label_version: get full context label version */
+const char *HTS_Engine_get_fullcontext_label_version(HTS_Engine * engine)
+{
+   return HTS_ModelSet_get_fullcontext_label_version(&engine->ms);
+}
+
 /* HTS_Engine_get_total_frame: get total number of frame */
 size_t HTS_Engine_get_total_frame(HTS_Engine * engine)
 {
@@ -560,12 +572,12 @@ void HTS_Engine_save_information(HTS_Engine * engine, FILE * fp)
       /* interpolation */
       fprintf(fp, "           Interpolation size          -> %8lu\n", (unsigned long) HTS_ModelSet_get_nvoices(ms));
       for (j = 0, temp = 0.0; j < HTS_ModelSet_get_nvoices(ms); j++)
-         temp += condition->parameter_iw[i][j];
+         temp += condition->parameter_iw[j][i];
       for (j = 0; j < HTS_ModelSet_get_nvoices(ms); j++)
-         if (condition->parameter_iw[i][j] != 0.0)
-            condition->parameter_iw[i][j] /= temp;
+         if (condition->parameter_iw[j][i] != 0.0)
+            condition->parameter_iw[j][i] /= temp;
       for (j = 0; j < HTS_ModelSet_get_nvoices(ms); j++)
-         fprintf(fp, "           Interpolation weight[%2lu]    -> %8.0f(%%)\n", (unsigned long) j, (float) (100 * condition->parameter_iw[i][j]));
+         fprintf(fp, "           Interpolation weight[%2lu]    -> %8.0f(%%)\n", (unsigned long) j, (float) (100 * condition->parameter_iw[j][i]));
       /* MSD */
       if (HTS_ModelSet_is_msd(ms, i)) { /* for MSD */
          fprintf(fp, "           MSD flag                    ->     TRUE\n");
@@ -580,12 +592,12 @@ void HTS_Engine_save_information(HTS_Engine * engine, FILE * fp)
          fprintf(fp, "           GV interpolation size       -> %8lu\n", (unsigned long) HTS_ModelSet_get_nvoices(ms));
          /* interpolation */
          for (j = 0, temp = 0.0; j < HTS_ModelSet_get_nvoices(ms); j++)
-            temp += condition->gv_iw[i][j];
+            temp += condition->gv_iw[j][i];
          for (j = 0; j < HTS_ModelSet_get_nvoices(ms); j++)
-            if (condition->gv_iw[i][j] != 0.0)
-               condition->gv_iw[i][j] /= temp;
+            if (condition->gv_iw[j][i] != 0.0)
+               condition->gv_iw[j][i] /= temp;
          for (j = 0; j < HTS_ModelSet_get_nvoices(ms); j++)
-            fprintf(fp, "           GV interpolation weight[%2lu] -> %8.0f(%%)\n", (unsigned long) j, (float) (100 * condition->gv_iw[i][j]));
+            fprintf(fp, "           GV interpolation weight[%2lu] -> %8.0f(%%)\n", (unsigned long) j, (float) (100 * condition->gv_iw[j][i]));
       } else {
          fprintf(fp, "           GV flag                     ->    FALSE\n");
       }
@@ -650,8 +662,40 @@ void HTS_Engine_save_label(HTS_Engine * engine, FILE * fp)
    }
 }
 
+/* HTS_Engine_save_generated_parameter: save generated parameter */
+void HTS_Engine_save_generated_parameter(HTS_Engine * engine, size_t stream_index, FILE * fp)
+{
+   size_t i, j;
+   float temp;
+   HTS_GStreamSet *gss = &engine->gss;
 
-/* Enda sõnnik rääkiva pea jaoks, mälulekked vägagi võimalikud */
+   for (i = 0; i < HTS_GStreamSet_get_total_frame(gss); i++)
+      for (j = 0; j < HTS_GStreamSet_get_vector_length(gss, stream_index); j++) {
+         temp = (float) HTS_GStreamSet_get_parameter(gss, stream_index, i, j);
+         fwrite(&temp, sizeof(float), 1, fp);
+      }
+}
+
+/* HTS_Engine_save_generated_speech: save generated speech */
+void HTS_Engine_save_generated_speech(HTS_Engine * engine, FILE * fp)
+{
+   size_t i;
+   double x;
+   short temp;
+   HTS_GStreamSet *gss = &engine->gss;
+
+   for (i = 0; i < HTS_GStreamSet_get_total_nsamples(gss); i++) {
+      x = HTS_GStreamSet_get_speech(gss, i);
+      if (x > 32767.0)
+         temp = 32767;
+      else if (x < -32768.0)
+         temp = -32768;
+      else
+         temp = (short) x;
+      fwrite(&temp, sizeof(short), 1, fp);
+   }
+}
+
 void HTS_Engine_save_durlabel(HTS_Engine * engine, FILE * fp)
 {
    size_t i, j;
@@ -705,46 +749,6 @@ void HTS_Engine_save_durlabel(HTS_Engine * engine, FILE * fp)
 }
 
 
-
-
-
-
-/* HTS_Engine_save_generated_parameter: save generated parameter */
-void HTS_Engine_save_generated_parameter(HTS_Engine * engine, size_t stream_index, FILE * fp)
-{
-   size_t i, j;
-   float temp;
-   HTS_GStreamSet *gss = &engine->gss;
-
-   for (i = 0; i < HTS_GStreamSet_get_total_frame(gss); i++)
-      for (j = 0; j < HTS_GStreamSet_get_vector_length(gss, stream_index); j++) {
-         temp = (float) HTS_GStreamSet_get_parameter(gss, stream_index, i, j);
-         fwrite(&temp, sizeof(float), 1, fp);
-      }
-}
-
-/* HTS_Engine_save_generated_speech: save generated speech */
-void HTS_Engine_save_generated_speech(HTS_Engine * engine, FILE * fp)
-{
-   size_t i;
-   double x;
-   short temp;
-   HTS_GStreamSet *gss = &engine->gss;
-
-   for (i = 0; i < HTS_GStreamSet_get_total_nsamples(gss); i++) {
-      x = HTS_GStreamSet_get_speech(gss, i);
-      if (x > 32767.0)
-         temp = 32767;
-      else if (x < -32768.0)
-         temp = -32768;
-      else
-         temp = (short) x;
-      fwrite(&temp, sizeof(short), 1, fp);
-   }
-}
-
-/* Enda sõnnik */
-
 int HTS_Engine_engine_speech_size(HTS_Engine * engine) {
 	return HTS_GStreamSet_get_total_nsamples(&engine->gss) * sizeof(short);
 }
@@ -754,7 +758,7 @@ void HTS_Engine_write_header(HTS_Engine * engine, FILE * fp, int fs)
    size_t i;
    double x;
    short temp;
-
+   
    HTS_GStreamSet *gss = &engine->gss;
    char data_01_04[] = { 'R', 'I', 'F', 'F' };
    int data_05_08 = HTS_GStreamSet_get_total_nsamples(gss) * sizeof(short) + 36;
@@ -771,6 +775,7 @@ void HTS_Engine_write_header(HTS_Engine * engine, FILE * fp, int fs)
    //int data_41_44 = HTS_GStreamSet_get_total_nsamples(gss) * sizeof(short);
 
    /* write header */
+   fseek ( fp , 0 , SEEK_SET );
    HTS_fwrite_little_endian(data_01_04, sizeof(char), 4, fp);
    HTS_fwrite_little_endian(&data_05_08, sizeof(int), 1, fp);
    HTS_fwrite_little_endian(data_09_12, sizeof(char), 4, fp);
@@ -787,8 +792,11 @@ void HTS_Engine_write_header(HTS_Engine * engine, FILE * fp, int fs)
 
 }
 
-/* HTS_Engine_save_riff: save RIFF format file */
 
+
+
+
+/* HTS_Engine_save_riff: save RIFF format file */
 void HTS_Engine_save_riff(HTS_Engine * engine, FILE * fp)
 {
    size_t i;
@@ -864,12 +872,12 @@ void HTS_Engine_clear(HTS_Engine * engine)
    if (engine->condition.gv_weight != NULL)
       HTS_free(engine->condition.gv_weight);
    if (engine->condition.parameter_iw != NULL) {
-      for (i = 0; i < HTS_ModelSet_get_nstream(&engine->ms); i++)
+      for (i = 0; i < HTS_ModelSet_get_nvoices(&engine->ms); i++)
          HTS_free(engine->condition.parameter_iw[i]);
       HTS_free(engine->condition.parameter_iw);
    }
    if (engine->condition.gv_iw != NULL) {
-      for (i = 0; i < HTS_ModelSet_get_nstream(&engine->ms); i++)
+      for (i = 0; i < HTS_ModelSet_get_nvoices(&engine->ms); i++)
          HTS_free(engine->condition.gv_iw[i]);
       HTS_free(engine->condition.gv_iw);
    }

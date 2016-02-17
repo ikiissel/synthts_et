@@ -1,8 +1,15 @@
 2016-01-11  ikiissel
 	* ChangeLog, run.sh, eki_et_eva.htsvoice
-	  eki_et_eva voicefile bug fixed
+	  eki_et_eva voicefile'i veaparandus
 	  
 2016-01-18  ikiissel
 	* ChangeLog, run.sh, eki_et_lis.htsvoice synthts_et.cpp
-	  added eki_et_lis.htsvoice, synthts_et.cpp minor bugs fixed
+	  lisatud eki_et_lis.htsvoice, synthts_et.cpp väiksemad vigadeparandused
 
+2016-02-17 ikiissel
+	* ChangeLog eki_et_rna.htsvoice *.cpp hts-engine1.10
+	  hääled on treenitud HTS-2.3_for_HTK-3.4.1 (oli HTS-2.3alpha_for_HTK-3.4.1)
+	  hts_engine_API-1.08 on asendatud hts_engine_API-1.10
+	  massiliselt parandusi
+	
+	

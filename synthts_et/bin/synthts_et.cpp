@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-
 #include "../lib/etana/proof.h"
 #include "../include/mklab.h"
 extern "C" {
@@ -19,7 +18,6 @@ typedef unsigned char uchar;
 wchar_t *UTF8_to_WChar(const char *string) {
     long b = 0,
             c = 0;
-    //if ((uchar)string[0]==BOM8A && (uchar)string[1]==BOM8B && (uchar)string[2]==BOM8C) string+=3;
     for (const char *a = string; *a; a++)
         if (((uchar) * a) < 128 || (*a & 192) == 192)
             c++;
@@ -48,7 +46,7 @@ void ReadUTF8Text(CFSWString &text, const char *fn) {
     std::ifstream fs;
     fs.open(fn, std::ios::binary);
     if (fs.fail()) {
-        std::cerr << "Ei leia sisendteksti!\n";
+        fprintf(stderr,"Ei leia sisendteksti!\n");
         exit(1);
     }
     fs.seekg(0, std::ios::end);
@@ -65,11 +63,17 @@ void ReadUTF8Text(CFSWString &text, const char *fn) {
 }
 
 int PrintUsage() {
-    wprintf(L"\nUsage!\n");
-    return 0;
+    fprintf(stderr,"\t-f 	[sisendtekst utf8-s] \n");
+    fprintf(stderr,"\t-o 	[väljund-wav]  \n");
+    fprintf(stderr,"\t-lex 	[analüüsi sõnastik]  \n");
+    fprintf(stderr,"\t-lexd	[ühestaja sõnastik]  \n");
+    fprintf(stderr,"\t-m 	[hääle nimi, vt kataloogi htsvoices/] \n");
+    fprintf(stderr,"\t-r 	[kõnetempo, double, 0.01-2.76] \n");
+    fprintf(stderr,"\tnäide: \n");
+    fprintf(stderr,"\tbin/synthts_et -lex dct/et.dct -lexd dct/et3.dct -o out_tnu.wav -f in.txt -m htsvoices/eki_et_tnu.htsvoice -r 1.1\n");
+        
+    exit(0);
 }
-
-
 
 char *convert_vec(const std::string & s) {
     char *pc = new char[s.size() + 1];
@@ -108,25 +112,44 @@ void cfileexists(const char * filename) {
     }
 }
 
+void samplerate(size_t &fr, size_t &fp, float &alpha, size_t br) {
+    fr = br * 1000;
+    fp = br / 2 * 10;
+
+    if (fr <= 8000) alpha = 0.31; 
+        else
+    if (fr <= 10000) alpha = 0.35; 
+        else
+    if (fr <= 12000) alpha = 0.37; 
+        else
+    if (fr <= 16000) alpha = 0.42; 
+        else
+    if (fr <= 32000) alpha = 0.45; 
+        else
+    if (fr <= 44100) alpha = 0.53; 
+        else
+    if (fr <= 48000) alpha = 0.55; 
+        else
+            alpha = 0.55;
+}
+
 int main(int argc, char* argv[]) {
     size_t num_voices;
     char **fn_voices;
     char* in_fname;
     char* output_fname;
-    const char *temp_fname = "temp";
-    FILE * tmpfp;
     FILE * outfp;
 
     CFSAString LexFileName, LexDFileName;
     HTS_Engine engine;
-    double speed = 1.0;
+    double speed = 1.1;
     size_t fr = 48000;
     size_t fp = 240;
     float alpha = 0.55;
     float beta = 0.0;
     float ht = 2.0;
     float th = 0.5;
-    float gvw1 = 1.2;
+    float gvw1 = 1.0;
     float gvw2 = 1.2;
 
     FSCInit();
@@ -152,7 +175,7 @@ int main(int argc, char* argv[]) {
             if (i + 1 < argc) {
                 fn_voices[0] = argv[i + 1];
             } else {
-                std::cerr << "puudub *.htsvoice fail" << std::endl;
+                fprintf(stderr, "puudub *.htsvoice fail\n");
                 exit(0);
             }
         }
@@ -161,30 +184,37 @@ int main(int argc, char* argv[]) {
                 output_fname = argv[i + 1];
                 cfileexists(output_fname);
             } else {
-                std::cerr << "puudb väljundfaili nimi" << std::endl;
+                fprintf(stderr, "puudb väljundfaili nimi\n");
                 exit(0);
             }
         }
-
         if (CFSAString("-f") == argv[i]) {
             if (i + 1 < argc) {
                 in_fname = argv[i + 1];
             } else {
-                std::cerr << "puudb sisendfaili nimi" << std::endl;
+                fprintf(stderr, "puudb sisendfaili nimi\n");
                 exit(0);
+            }
+        }
+        if (CFSAString("-s") == argv[i]) {
+            if (i + 1 < argc) {
+                samplerate(fr, fp, alpha, atoi(argv[i + 1]));
+            }
+        }
+        if (CFSAString("-r") == argv[i]) {
+            if (i + 1 < argc) {
+                speed = atof(argv[i + 1]);
             }
         }
 
     }
 
-
     Linguistic.Open(LexFileName);
     Disambiguator.Open(LexDFileName);
+
     CFSWString text;
     ReadUTF8Text(text, in_fname);
-    //text.Delete(text.GetLength()-1, 1);
     HTS_Engine_initialize(&engine);
-
 
     if (HTS_Engine_load(&engine, fn_voices, 1) != TRUE) {
         fprintf(stderr, "Viga: puudub *.htsvoice. %p\n", fn_voices[0]);
@@ -204,22 +234,20 @@ int main(int argc, char* argv[]) {
     HTS_Engine_set_msd_threshold(&engine, 1, th);
     /*
     HTS_Engine_set_duration_interpolation_weight(&engine, 1, diw);
-		HTS_Engine_set_parameter_interpolation_weight(&engine, 0, 0, piw1);
-		HTS_Engine_set_parameter_interpolation_weight(&engine, 0, 1, piw2);
-		HTS_Engine_set_gv_interpolation_weight(&engine, 0, 0, giw1);
-		HTS_Engine_set_gv_interpolation_weight(&engine, 0, 1, giw2);
-    */
+    HTS_Engine_set_parameter_interpolation_weight(&engine, 0, 0, piw1);
+    HTS_Engine_set_parameter_interpolation_weight(&engine, 0, 1, piw2);
+    HTS_Engine_set_gv_interpolation_weight(&engine, 0, 0, giw1);
+    HTS_Engine_set_gv_interpolation_weight(&engine, 0, 1, giw2);
+     */
     HTS_Engine_set_gv_weight(&engine, 0, gvw1);
     HTS_Engine_set_gv_weight(&engine, 1, gvw2);
 
     text = DealWithText(text);
-
     CFSArray<CFSWString> res = do_utterances(text);
 
-
-    int data_size = 0;
-    tmpfp = fopen(temp_fname, "ab");
-
+    INTPTR data_size = 0;
+    outfp = fopen(output_fname, "wb");
+    HTS_Engine_write_header(&engine, outfp, 1);
     for (INTPTR i = 0; i < res.GetSize(); i++) {
 
         CFSArray<CFSWString> label = do_all(res[i]);
@@ -233,42 +261,43 @@ int main(int argc, char* argv[]) {
         size_t n_lines = vc.size();
 
         if (HTS_Engine_synthesize_from_strings(&engine, &vc[0], n_lines) != TRUE) {
-            fprintf(stderr, "Viga: syntees ebaonnestus.\n");
+            fprintf(stderr, "Viga: süntees ebaonnestus.\n");
             HTS_Engine_clear(&engine);
             exit(1);
         }
 
         clean_char_vector(vc);
         data_size += HTS_Engine_engine_speech_size(&engine);
-        HTS_Engine_save_generated_speech(&engine, tmpfp);
+        HTS_Engine_save_generated_speech(&engine, outfp);
 
         HTS_Engine_refresh(&engine);
 
     } //synth loop
     
-    fclose(tmpfp);
-    tmpfp = fopen(temp_fname, "rb");
-    outfp = fopen(output_fname, "wb");
     HTS_Engine_write_header(&engine, outfp, data_size);
-
-    size_t n, m;
-    unsigned char buff[2];
-    do {
-        n = fread(buff, 1, sizeof buff, tmpfp);
-        if (n) m = fwrite(buff, 1, n, outfp);
-        else m = 0;
-    } while ((n > 0) && (n == m));
-    if (m) perror("copy");
-
-    fclose(tmpfp);
     fclose(outfp);
-    remove(temp_fname);
+
     HTS_Engine_clear(&engine);
     Linguistic.Close();
+
     FSCTerminate();
     return 0;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

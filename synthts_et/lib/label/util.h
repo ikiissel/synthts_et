@@ -36,7 +36,7 @@ struct text_struct {
 	CFSArray<utterance_struct> utt_vector;
 };
 
-
+const CFSWString sp = L" ";
 const CFSWString d = L"-";
 const CFSWString colon = L":";
 const CFSWString no_synth = L"-";
@@ -69,12 +69,14 @@ bool is_hyphen (CFSWString c);
 bool is_bhyphen (CFSWString c);
 bool is_underscore (CFSWString c);
 bool is_compound_word (CFSWString c);
+bool is_upper_word (CFSWString c);
 
 bool has_vowel(CFSWString s);
 void make_ctype_array (CFSWString s, CFSArray<CFSWString> &a);
 CFSWString make_char_string (CFSWString c);
 INTPTR ctype (CFSWString c);
 
+INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a);
 CFSWString replace_fchar (CFSWString c);
 CFSWString replace_schar (CFSWString c);
 INTPTR explode(CFSWString s, CFSWString cSplitter, CFSArray<CFSWString> &Array);
@@ -82,7 +84,7 @@ CMorphInfo clean_anaroot_output (CMorphInfo MI);
 
 
 //Muud jubinad
-void Print (CFSWString label, CFSWString s);
-void PRINDI_YHESTAMINE (CFSArray<CMorphInfo> A);
-void PrintAnalyze(CMorphInfo ai);
+
+// fprintf sobilik convert
+const char* ccstr (CFSWString s);
 
