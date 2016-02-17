@@ -44,7 +44,7 @@
 ==============================================================================
 
                    Eesti keele HTS-kõnesüntees                     
-             Copyright (c) 2015 Eesti Keele Instituut              
+         Copyright (c) 2015-2016 Eesti Keele Instituut              
                          Indrek Kiissel
              
          HTK-3.4.1, HTS-2.3.patch, HTS-engine_API_1.10
