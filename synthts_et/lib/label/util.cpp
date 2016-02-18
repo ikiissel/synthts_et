@@ -4,22 +4,22 @@
 
 
 bool is_lvowel (CFSWString c) {
-	if (c.FindOneOf(L"aeiouõäöü") > -1)	return true;
+	if (c.FindOneOf(L"aeiouõäöüy") > -1)	return true;
 		return false;
 }
 
 bool is_uvowel (CFSWString c) {
-	if (c.FindOneOf(L"AEIOUÕÄÖÜ") > -1)	return true;
+	if (c.FindOneOf(L"AEIOUÕÄÖÜY") > -1)	return true;
 		return false;
 }
 
 bool is_lconsonant (CFSWString c) {
-	if (c.FindOneOf(L"bcdfghjklmnpqrsšžtvwxyz") > -1)	return true;
+	if (c.FindOneOf(L"bcdfghjklmnpqrsšžtvwxz") > -1)	return true;
 		return false;
 }
 
 bool is_uconsonant (CFSWString c) {
-	if (c.FindOneOf(L"BCDFGHJKLMNPQRSŠŽTVWXYZ") > -1) return true;
+	if (c.FindOneOf(L"BCDFGHJKLMNPQRSŠŽTVWXZ") > -1) return true;
 		return false;
 }
 
