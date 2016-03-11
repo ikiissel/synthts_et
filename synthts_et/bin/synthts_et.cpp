@@ -69,11 +69,12 @@ int PrintUsage() {
     fprintf(stderr,"\t-lexd	[ühestaja sõnastik]  \n");
     fprintf(stderr,"\t-m 	[hääle nimi, vt kataloogi htsvoices/] \n");
     fprintf(stderr,"\t-r 	[kõnetempo, double, 0.01-2.76] \n");
+    fprintf(stderr,"\t-ht 	[float]\n");
     fprintf(stderr,"\t-gvw1 	[float]\n");
-    fprintf(stderr,"\t-gvw2     [float]\n");
+    fprintf(stderr,"\t-gvw2 	[float]\n");
     fprintf(stderr,"\t-debug 	[prindi labeli struktuur]\n");
     fprintf(stderr,"\t-raw 	[väljund-raw]\n");
-    fprintf(stderr,"\t-dur 	[foneemid koos kestustega failinimi]\n");
+    fprintf(stderr,"\t-dur 	[foneemid koos kestustega, failinimi]\n");
     fprintf(stderr,"\n\tnäide: \n");
     fprintf(stderr,"\t\tbin/synthts_et -lex dct/et.dct -lexd dct/et3.dct \\ \n");
     fprintf(stderr,"\t\t-o out_tnu.wav -f in.txt -m htsvoices/eki_et_tnu.htsvoice \\\n");
@@ -223,6 +224,11 @@ int main(int argc, char* argv[]) {
         if (CFSAString("-r") == argv[i]) {
             if (i + 1 < argc) {
                 speed = atof(argv[i + 1]);
+            }
+        }
+        if (CFSAString("-ht") == argv[i]) {
+            if (i + 1 < argc) {
+                ht = atof(argv[i + 1]);
             }
         }
         if (CFSAString("-gvw1") == argv[i]) {
