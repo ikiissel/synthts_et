@@ -54,7 +54,7 @@ bool is_underscore (CFSWString c) { //liitsõna värk, selleks lahku
 }
 
 bool is_symbol (CFSWString c) {
-	if ( (c.FindOneOf(L"-*@#€$£%&/\\=+~<>§") > -1) || is_underscore(c)) 	return true;
+	if ( (c.FindOneOf(L"-*@#€$£%&/\\=+~<>§αβγδ") > -1) || is_underscore(c)) 	return true;
 		return false;
 }
 
@@ -388,14 +388,14 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"õpil") return explode(L"õpilane", sp, a);
     if (s == L"ÄÜ") return explode(L"äriühing", sp, a);
     if (s == L"ÜE") return explode(L"ühisettevõte", sp, a);
-    if (s == L"SEK") return explode(L"Rootsi kroon", sp, a);
-    if (s == L"NOK") return explode(L"Norra kroon", sp, a);
+    if (s == L"SEK") return explode(L"Rootsi krooni", sp, a);
+    if (s == L"NOK") return explode(L"Norra krooni", sp, a);
     if (s == L"RUR") return explode(L"Vene rubla", sp, a);
-    if (s == L"USD") return explode(L"USA dollar", sp, a);
-    if (s == L"GBP") return explode(L"Inglise nael", sp, a);
-    if (s == L"LVL") return explode(L"Läti latt", sp, a);
-    if (s == L"LTL") return explode(L"Leedu litt", sp, a);
-    if (s == L"EEK") return explode(L"Eesti kroon", sp, a);
+    if (s == L"USD") return explode(L"USA dollarit", sp, a);
+    if (s == L"GBP") return explode(L"Inglise naela", sp, a);
+    if (s == L"LVL") return explode(L"Läti latti", sp, a);
+    if (s == L"LTL") return explode(L"Leedu litti", sp, a);
+    if (s == L"EEK") return explode(L"Eesti krooni", sp, a);
     return 0;
 }
 
@@ -458,6 +458,7 @@ CFSWString replace_fchar (CFSWString c) {
 	if (c == L"Þ") return L"k";
 	if (c == L"ð") return L"k";
 	if (c == L"þ") return L"k";	
+        
 
 }
 
@@ -522,6 +523,11 @@ CFSWString replace_schar (CFSWString c) {
     if (c == L"(") return L"sulgudes";
     if (c == L"[") return L"nurksulgudes";
     if (c == L"{") return L"loogsulgudes";
+    if (c == L"α") return L"alfa";
+    if (c == L"β") return L"beta";
+    if (c == L"γ") return L"gamma";
+    if (c == L"δ") return L"delta";
+    
     return L"tundmatumärk";
 }
 

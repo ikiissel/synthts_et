@@ -69,8 +69,15 @@ int PrintUsage() {
     fprintf(stderr,"\t-lexd	[ühestaja sõnastik]  \n");
     fprintf(stderr,"\t-m 	[hääle nimi, vt kataloogi htsvoices/] \n");
     fprintf(stderr,"\t-r 	[kõnetempo, double, 0.01-2.76] \n");
-    fprintf(stderr,"\tnäide: \n");
-    fprintf(stderr,"\tbin/synthts_et -lex dct/et.dct -lexd dct/et3.dct -o out_tnu.wav -f in.txt -m htsvoices/eki_et_tnu.htsvoice -r 1.1\n");
+    fprintf(stderr,"\t-gvw1 	[float]\n");
+    fprintf(stderr,"\t-gvw2     [float]\n");
+    fprintf(stderr,"\t-debug 	[prindi labeli struktuur]\n");
+    fprintf(stderr,"\t-raw 	[väljund-raw]\n");
+    fprintf(stderr,"\t-dur 	[foneemid koos kestustega failinimi]\n");
+    fprintf(stderr,"\n\tnäide: \n");
+    fprintf(stderr,"\t\tbin/synthts_et -lex dct/et.dct -lexd dct/et3.dct \\ \n");
+    fprintf(stderr,"\t\t-o out_tnu.wav -f in.txt -m htsvoices/eki_et_tnu.htsvoice \\\n");
+    fprintf(stderr,"\t\t-r 1.1\n");
         
     exit(0);
 }
@@ -139,6 +146,11 @@ int main(int argc, char* argv[]) {
     char* in_fname;
     char* output_fname;
     FILE * outfp;
+    char* dur_fname;
+    FILE * durfp;    
+    bool print_label = false;
+    bool write_raw = false;
+    bool write_durlabel = false;
 
     CFSAString LexFileName, LexDFileName;
     HTS_Engine engine;
@@ -153,8 +165,12 @@ int main(int argc, char* argv[]) {
     float gvw2 = 1.2;
 
     FSCInit();
-
     fn_voices = (char **) malloc(argc * sizeof (char *));
+    
+    if (argc < 11) {
+        fprintf(stderr, "Viga: liiga vähe parameetreid\n\n");
+        PrintUsage();
+    }    
 
     for (int i = 0; i < argc; i++) {
         if (CFSAString("-lex") == argv[i]) {
@@ -175,7 +191,8 @@ int main(int argc, char* argv[]) {
             if (i + 1 < argc) {
                 fn_voices[0] = argv[i + 1];
             } else {
-                fprintf(stderr, "puudub *.htsvoice fail\n");
+                fprintf(stderr, "Viga: puudub *.htsvoice fail\n");
+                PrintUsage();
                 exit(0);
             }
         }
@@ -184,7 +201,8 @@ int main(int argc, char* argv[]) {
                 output_fname = argv[i + 1];
                 cfileexists(output_fname);
             } else {
-                fprintf(stderr, "puudb väljundfaili nimi\n");
+                fprintf(stderr, "Viga: puudb väljundfaili nimi\n");
+                PrintUsage();
                 exit(0);
             }
         }
@@ -192,7 +210,8 @@ int main(int argc, char* argv[]) {
             if (i + 1 < argc) {
                 in_fname = argv[i + 1];
             } else {
-                fprintf(stderr, "puudb sisendfaili nimi\n");
+                fprintf(stderr, "Viga: puudb sisendfaili nimi\n");
+                PrintUsage();
                 exit(0);
             }
         }
@@ -206,7 +225,35 @@ int main(int argc, char* argv[]) {
                 speed = atof(argv[i + 1]);
             }
         }
+        if (CFSAString("-gvw1") == argv[i]) {
+            if (i + 1 < argc) {
+                gvw1 = atof(argv[i + 1]);
+            }
+        }
+        if (CFSAString("-gvw2") == argv[i]) {
+            if (i + 1 < argc) {
+                gvw2 = atof(argv[i + 1]);
+            }
+        }        
+        if (CFSAString("-debug") == argv[i]) {
+            print_label = true;
+        }
+        if (CFSAString("-raw") == argv[i]) {
+            write_raw = true;
+        }
+        if (CFSAString("-dur") == argv[i]) {
+            if (i + 1 < argc) {
+                dur_fname = argv[i + 1];
+                cfileexists(dur_fname);
+                write_durlabel = true;                
+            } else {
+                fprintf(stderr, "Viga: puudb kestustefaili nimi\n");
+                PrintUsage();
+                exit(0);
+            }
+        }
 
+        
     }
 
     Linguistic.Open(LexFileName);
@@ -247,10 +294,11 @@ int main(int argc, char* argv[]) {
 
     INTPTR data_size = 0;
     outfp = fopen(output_fname, "wb");
-    HTS_Engine_write_header(&engine, outfp, 1);
+    if (write_durlabel) durfp = fopen(dur_fname, "w");
+    if (!write_raw) HTS_Engine_write_header(&engine, outfp, 1);
     for (INTPTR i = 0; i < res.GetSize(); i++) {
 
-        CFSArray<CFSWString> label = do_all(res[i]);
+        CFSArray<CFSWString> label = do_all(res[i], print_label);
 
         std::vector<std::string> v;
         v = to_vector(label);
@@ -261,20 +309,22 @@ int main(int argc, char* argv[]) {
         size_t n_lines = vc.size();
 
         if (HTS_Engine_synthesize_from_strings(&engine, &vc[0], n_lines) != TRUE) {
-            fprintf(stderr, "Viga: süntees ebaonnestus.\n");
+            fprintf(stderr, "Viga: süntees ebaonnestus.\n");            
             HTS_Engine_clear(&engine);
             exit(1);
         }
 
         clean_char_vector(vc);
         data_size += HTS_Engine_engine_speech_size(&engine);
+        if (write_durlabel) HTS_Engine_save_durlabel(&engine, durfp);
         HTS_Engine_save_generated_speech(&engine, outfp);
 
         HTS_Engine_refresh(&engine);
 
     } //synth loop
     
-    HTS_Engine_write_header(&engine, outfp, data_size);
+    if (!write_raw) HTS_Engine_write_header(&engine, outfp, data_size);
+    if (write_durlabel) fclose(durfp);
     fclose(outfp);
 
     HTS_Engine_clear(&engine);
@@ -284,20 +334,5 @@ int main(int argc, char* argv[]) {
     return 0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
