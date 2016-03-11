@@ -12,4 +12,7 @@
 	  hts_engine_API-1.08 on asendatud hts_engine_API-1.10
 	  massiliselt parandusi
 	
-	
+2016-03-11 ikiissel	
+	* ChangeLog, htsvoices/*.htsvoice synthts.cpp lib/label/mklab.cpp
+	  question-faili vea parandus, kõik hääled on uuesti genereeritud
+	  väiksemad veaparandused
