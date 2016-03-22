@@ -14,5 +14,10 @@
 	
 2016-03-11 ikiissel	
 	* ChangeLog, htsvoices/*.htsvoice synthts.cpp lib/label/mklab.cpp
-	  question-faili vea parandus, kõik hääled on uuesti genereeritud
+	  question-faili vea parandus, kõik hääled on uuesti genereeritud,
 	  väiksemad veaparandused
+
+2016-03-22 ikiissel
+	* Changelog eki_et_evas.htsvoice eki_et_evasl.htsvoice
+	  evas - treeningbaasiks 11271 sõnavormi või ühendverbi
+	  evasl - eva + evas (eva - 2003 lausungit)
