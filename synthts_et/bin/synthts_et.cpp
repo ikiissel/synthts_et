@@ -50,16 +50,16 @@ void ReadUTF8Text(CFSWString &text, const char *fn) {
         exit(1);
     }
     fs.seekg(0, std::ios::end);
-    size_t i = fs.tellg();
-    char* buf = new char[i];
+    size_t i = fs.tellg();    
     fs.seekg(0, std::ios::beg);
+    char* buf = new char[i+1];
     fs.read(buf, i);
     fs.close();
-
-    wchar_t* w_temp;
-    w_temp = UTF8_to_WChar(buf);
-    delete [] buf;
+    buf[i] = '\0';
+    wchar_t* w_temp = UTF8_to_WChar(buf);
     text = w_temp;
+    delete [] buf;
+    delete [] w_temp;
 }
 
 int PrintUsage() {

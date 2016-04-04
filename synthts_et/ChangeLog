@@ -21,3 +21,8 @@
 	* Changelog eki_et_evas.htsvoice eki_et_evasl.htsvoice
 	  evas - treeningbaasiks 11271 sõnavormi või ühendverbi
 	  evasl - eva + evas (eva - 2003 lausungit)
+	  
+2016-04-04 ikiissel	
+	* ChangeLog, synthts_et.cpp
+	  void ReadUTF8Text(CFSWString &text, const char *fn) veaparandus
+	  
