@@ -197,6 +197,7 @@ INTPTR do_phrases(utterance_struct &u) {
         CFSWString nc = u.s.GetAt(i + 1);
         CFSWString nnc = u.s.GetAt(i + 2);
         if ((is_comma(c) || is_colon(c) || is_semicolon(c)) && is_space(nc) && is_char(nnc)) {
+            res.Trim();
             if (res.GetLength() > 0) {
                 push_ph_res(u, p, res);
             }
@@ -326,7 +327,7 @@ void print_u(utterance_struct u) {
     wprintf(L"\n");
 }
 
-CFSArray<CFSWString> do_all(CFSWString utt, bool print_label) {
+CFSArray<CFSWString> do_all(CFSWString utt, bool print_label, bool print_utt) {
     CFSArray<CFSWString> res;
     CFSArray<CPTWord> PTW;
     utterance_struct u;
@@ -335,6 +336,7 @@ CFSArray<CFSWString> do_all(CFSWString utt, bool print_label) {
     u.phone_c = 0;
     u.phra_c = do_phrases(u);
     INTPTR word_count = 0;
+	 if (print_utt) fprintf(stderr, "%s\n", ccstr(utt));    
     for (INTPTR i = 0; i < u.phr_vector.GetSize(); i++) {
         u.phr_vector[i].utt_p = i;
         phrase2words(u.phr_vector[i], PTW);

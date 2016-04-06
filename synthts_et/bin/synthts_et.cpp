@@ -72,6 +72,7 @@ int PrintUsage() {
     fprintf(stderr,"\t-ht 	[float]\n");
     fprintf(stderr,"\t-gvw1 	[float]\n");
     fprintf(stderr,"\t-gvw2 	[float]\n");
+    fprintf(stderr,"\t-utt 	[prindi lausung]\n");
     fprintf(stderr,"\t-debug 	[prindi labeli struktuur]\n");
     fprintf(stderr,"\t-raw 	[väljund-raw]\n");
     fprintf(stderr,"\t-dur 	[foneemid koos kestustega, failinimi]\n");
@@ -150,6 +151,7 @@ int main(int argc, char* argv[]) {
     char* dur_fname;
     FILE * durfp;    
     bool print_label = false;
+    bool print_utt = false;
     bool write_raw = false;
     bool write_durlabel = false;
 
@@ -244,6 +246,9 @@ int main(int argc, char* argv[]) {
         if (CFSAString("-debug") == argv[i]) {
             print_label = true;
         }
+        if (CFSAString("-utt") == argv[i]) {
+            print_utt = true;
+        }        
         if (CFSAString("-raw") == argv[i]) {
             write_raw = true;
         }
@@ -304,7 +309,7 @@ int main(int argc, char* argv[]) {
     if (!write_raw) HTS_Engine_write_header(&engine, outfp, 1);
     for (INTPTR i = 0; i < res.GetSize(); i++) {
 
-        CFSArray<CFSWString> label = do_all(res[i], print_label);
+        CFSArray<CFSWString> label = do_all(res[i], print_label, print_utt);
 
         std::vector<std::string> v;
         v = to_vector(label);
