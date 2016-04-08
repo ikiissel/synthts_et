@@ -249,7 +249,7 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"eKr") return explode(L"enne Kristuse sündi", sp, a);
     if (s == L"EL") return explode(L"Euroopa Liit", sp, a);
     if (s == L"e.m.a") return explode(L"enne meie ajaarvamist", sp, a);
-    if (s == L"end") return explode(L"endine", sp, a);
+//    if (s == L"end") return explode(L"endine", sp, a);
     if (s == L"FIE") return explode(L"füüsilisest isikust ettevõtja", sp, a);
     if (s == L"hr") return explode(L"härra", sp, a);
     if (s == L"hrl") return explode(L"harilikult", sp, a);
