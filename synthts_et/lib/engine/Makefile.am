@@ -7,7 +7,7 @@ lib_LIBRARIES = libHTSEngine.a
 
 libHTSEngine_a_SOURCES = HTS_audio.c  HTS_engine.c  HTS_hidden.h  HTS_misc.c  \
                          HTS_pstream.c  HTS_sstream.c  HTS_model.c  HTS_vocoder.c \
-                         HTS_gstream.c HTS_label.c
+                         HTS_gstream.c HTS_label.c HTS_engine_patches.c
 
 DISTCLEANFILES = *.log *.out *~
 
