@@ -4,7 +4,7 @@
 AC_PREREQ(2.59)
 AC_INIT(synthts_et, 0.01)
 AC_CONFIG_AUX_DIR([config])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([foreign])
 
 # Checks for C compiler
 AC_PROG_CXX
