@@ -274,7 +274,11 @@ void do_phones(syl_struct &ss) {
         if (c == L'ü') c = L"y";
 
         if (is_colon(c)) {
-            if (i > 0) // nihutusvigade kaitseks (vt "piirkonda")
+            // 1. nihutusvigade kaitseks (vt "piirkonda")
+            // 2-3. kolmandas vältes v ja j on kõnebaasis sedavõrd haruldased,
+            // et väljundis kuuleb nende asemel mingit r-i laadset hääikut.
+            // Kellel on parem baas, kommenteerigu 2. ja 3. tingimus välja.            
+				if ((i > 0) && (pv[pv.GetSize() - 1].phone != L"j") && (pv[pv.GetSize() - 1].phone != L"v"))
                 pv[pv.GetSize() - 1].phone += doq;
         } else {
             p.phone = c;

@@ -30,4 +30,8 @@
 	* ChangeLog, mklab.cpp
 	  väiksem fraseerimise veaparandus
 	  lisasin lüliti -utt lausungite väljaprindiks
-	  
+
+2016-05-03 ikiissel	
+	* ChangeLog, mklab.cpp
+	  eemaldasin foneemiloendist 3. välte j ja v. Mõelmad on kõnebaasis sedavõrd haruldused,
+	  et väljundis kuuleb nende asemel mingit r-i laadset heli.
