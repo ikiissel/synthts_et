@@ -1,0 +1,15 @@
+*.log
+*.out
+*~
+*.o
+*.a
+bin/synthts_et
+config
+include/*~
+config.status
+.deps
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache
+configure

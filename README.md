@@ -56,6 +56,7 @@
     	Peale lahtipakkimist
 
         cd synthts_et-master/synthts_et
+        autoreconf -vif
         ./configure
         make
 
