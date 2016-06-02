@@ -82,9 +82,17 @@ CFSWString chars_to_phones_part_I(CFSWString &s) {
         else
             if (c == L'w') res += L"v";
         else
-            if (c == L'z') res += L"ts";
-        else
+            if (c == L'z') {
+            if (s.GetAt(i + 1) == L'z') {
+                s.SetAt(i + 1, L's');
+                res += L"t";
+            } else
+                res += L"s";
+        } else
             if (c == L'c') {
+            if (s.GetAt(i + 1) == L'e' || s.GetAt(i + 1) == L'i' || s.GetAt(i + 1) == L'<' ) {                
+                res += L"ts";
+            } else                                
             res += L"k";
         } else
             if (c == L'ü' && is_vowel(s.GetAt(i + 1)) && s.GetAt(i - 1) == L'ü')
