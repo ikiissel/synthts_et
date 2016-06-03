@@ -244,8 +244,6 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"dl") return explode(L"dessertlusikatäis", sp, a);
     if (s == L"dots") return explode(L"dotsent", sp, a);
     if (s == L"dr") return explode(L"doktor", sp, a);
-    if (s == L"e") return explode(L"ehk", sp, a);
-    if (s == L"E") return explode(L"esmaspäev", sp, a);
     if (s == L"eKr") return explode(L"enne Kristuse sündi", sp, a);
     if (s == L"EL") return explode(L"Euroopa Liit", sp, a);
     if (s == L"e.m.a") return explode(L"enne meie ajaarvamist", sp, a);
@@ -273,7 +271,6 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"juh") return explode(L"juhataja", sp, a);
     if (s == L"jun") return explode(L"juunior", sp, a);
     if (s == L"jv") return explode(L"järv", sp, a);
-    if (s == L"K") return explode(L"kolmapäev", sp, a);
     if (s == L"k.a") return explode(L"kaasa arvatud", sp, a);
     if (s == L"kd") return explode(L"köide", sp, a);
     if (s == L"khk") return explode(L"kihelkond", sp, a);
@@ -287,8 +284,6 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"kub") return explode(L"kubermang", sp, a);
     if (s == L"kv") return explode(L"kvartal", sp, a);
     if (s == L"KÜ") return explode(L"korteriühistu", sp, a);
-    if (s == L"l") return explode(L"liiter", sp, a);
-    if (s == L"L") return explode(L"laupäev", sp, a);
     if (s == L"lg") return explode(L"lõige", sp, a);
     if (s == L"lj") return explode(L"linnajagu", sp, a);
     if (s == L"lk") return explode(L"lehekülg", sp, a);
@@ -308,7 +303,6 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"mob") return explode(L"mobiiltelefon", sp, a);
     if (s == L"ms") return explode(L"muuseas", sp, a);
     if (s == L"MTÜ") return explode(L"mittetulundusühing", sp, a);
-    if (s == L"N") return explode(L"neljapäev", sp, a);
     if (s == L"nim") return explode(L"nimeline", sp, a);
     if (s == L"nn") return explode(L"niinimetatud", sp, a);
     if (s == L"nov") return explode(L"november", sp, a);
@@ -318,7 +312,6 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"okt") return explode(L"oktoober", sp, a);
     if (s == L"osk") return explode(L"osakond", sp, a);
     if (s == L"OÜ") return explode(L"osaühing", sp, a);
-    if (s == L"P") return explode(L"pühapäev", sp, a);
     if (s == L"pa") return explode(L"poolaasta", sp, a);
     if (s == L"pk") return explode(L"postkast", sp, a);
     if (s == L"pKr") return explode(L"pärast Kristuse sündi", sp, a);
@@ -330,7 +323,6 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"ps") return explode(L"poolsaar", sp, a);
     if (s == L"pst") return explode(L"puiestee", sp, a);
     if (s == L"ptk") return explode(L"peatükk", sp, a);
-    if (s == L"R") return explode(L"reede", sp, a);
     if (s == L"raj") return explode(L"rajoon", sp, a);
     if (s == L"rbl") return explode(L"rubla", sp, a);
     if (s == L"RE") return explode(L"riigiettevõte", sp, a);
@@ -339,7 +331,6 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"rmtk") return explode(L"raamatukogu", sp, a);
     if (s == L"rkl") return explode(L"riigikoguliige", sp, a);
     if (s == L"rtj") return explode(L"raudteejaam", sp, a);
-    if (s == L"s") return explode(L"sekund", sp, a);
     if (s == L"SA") return explode(L"sihtasutus", sp, a);
     if (s == L"s.a") return explode(L"sel aastal", sp, a);
     if (s == L"saj") return explode(L"sajand", sp, a);
@@ -357,8 +348,6 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"srn") return explode(L"surnud", sp, a);
     if (s == L"sü") return explode(L"säilitusüksus", sp, a);
     if (s == L"snd") return explode(L"sündinud", sp, a);
-    if (s == L"t") return explode(L"tonn", sp, a);
-    if (s == L"T") return explode(L"teisipäev", sp, a);
     if (s == L"tehn") return explode(L"tehniline", sp, a);
     if (s == L"tel") return explode(L"telefon", sp, a);
     if (s == L"tk") return explode(L"tükk(i)", sp, a);
@@ -368,12 +357,9 @@ INTPTR is_abbreviation(CFSWString s, CFSArray<CFSWString> &a) {
     if (s == L"tn") return explode(L"tänav", sp, a);
     if (s == L"tr") return explode(L"trükk", sp, a);
     if (s == L"Trt") return explode(L"Tartu", sp, a);
-    if (s == L"tv") return explode(L"televisioon", sp, a);
-    if (s == L"TV") return explode(L"televisioon", sp, a);
     if (s == L"u") return explode(L"umbes", sp, a);
     if (s == L"ukj") return explode(L"uue kalendri järgi", sp, a);
     if (s == L"UÜ") return explode(L"usaldusühing", sp, a);
-    if (s == L"v") return explode(L"või", sp, a);
     if (s == L"v.a") return explode(L"välja arvatud", sp, a);
     if (s == L"van") return explode(L"vananenud", sp, a);
     if (s == L"VE") return explode(L"väikeettevõte", sp, a);
