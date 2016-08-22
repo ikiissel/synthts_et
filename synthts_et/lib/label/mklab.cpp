@@ -219,12 +219,14 @@ INTPTR do_phrases(utterance_struct &u) {
         } else
             if (is_space(c)) { // komatud sidesõnad
             CFSWString tempm = u.s.Mid(i + 1, -1);
+            res.Trim();
             if (is_conju(tempm.Left(tempm.Find(sp))) && res.GetLength() > 0) {
                 push_ph_res(u, p, res);
             } else
                 res += c;
         } else
             if (is_bhyphen(c)) {
+            res.Trim();
             if (res.GetLength() > 0 && ((is_char(pc) && is_space(nc)) || (is_space(nc) && is_char(nnc)) || (is_space(pc) && is_char(nc)))) {
                 push_ph_res(u, p, res);
             } else
