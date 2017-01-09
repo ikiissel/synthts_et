@@ -497,7 +497,7 @@ CFSWString replace_schar (CFSWString c) {
     if (c == L"$") return L"dollarit";
     if (c == L"£") return L"naela";
     if (c == L"%") return L"protsenti";
-    if (c == L"&") return L"änd";
+    if (c == L"&") return L"ja";
     if (c == L"/") return L"kaldkriips";
     if (c == L"\\") return L"tagurpidi kaldkriips";    
     if (c == L"=") return L"võrdub";
