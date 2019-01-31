@@ -171,6 +171,19 @@ CFSArray<CFSWString> make_label(CFSArray<phone_struct> pa) {
             cc = pa[i + 2].phone;
         }
 
+	if (p == L"pau" && ph == L"n" && c == L"a" && cc == L"g") p = L"u"; // fraasialgulise 'nagu' välistamine
+
+	if (pa[i].j1 == 1){ // ühesilbiliste lausungite parameetrite muutus
+		pa[i].j1 = 2;
+		if (ph != L"pau"){
+			pa[i].b5 = 2;
+			pa[i].b7 = 2;
+			pa[i].c3 = 2;
+			pa[i].e2 = 2;
+			pa[i].h1 = 2;
+		}
+	}
+
         s = pp + context_signs[0] + p + context_signs[1] + ph + context_signs[2] + c + context_signs[3] + cc + context_signs[4];
         s += its(pa[i].p6) + d + its(pa[i].p7);
         s += L"/A:";

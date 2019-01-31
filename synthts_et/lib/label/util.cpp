@@ -451,12 +451,12 @@ CFSWString replace_fchar (CFSWString c) {
 CFSWString replace_schar (CFSWString c) {
     c = c.ToLower();
     if (c == L"a") return L"aa";
-    if (c == L"b") return L"bee";
-    if (c == L"c") return L"tsee";
-    if (c == L"d") return L"dee";
+    if (c == L"b") return L"pee";
+    if (c == L"c") return L"tse";
+    if (c == L"d") return L"tee";
     if (c == L"e") return L"ee";
-    if (c == L"f") return L"eff";
-    if (c == L"g") return L"gee";
+    if (c == L"f") return L"ef";
+    if (c == L"g") return L"kee";
     if (c == L"h") return L"haa";
     if (c == L"i") return L"ii";
     if (c == L"j") return L"jott";
@@ -467,7 +467,7 @@ CFSWString replace_schar (CFSWString c) {
     if (c == L"o") return L"oo";
     if (c == L"p") return L"pee";
     if (c == L"q") return L"kuu";
-    if (c == L"r") return L"err";
+    if (c == L"r") return L"er";
     if (c == L"s") return L"ess";
     if (c == L"š") return L"shaa";
     if (c == L"ž") return L"shee";
@@ -478,7 +478,7 @@ CFSWString replace_schar (CFSWString c) {
     if (c == L"õ") return L"õõ";
     if (c == L"ä") return L"ää";
     if (c == L"ö") return L"öö";
-    if (c == L"ü") return L"üü";
+    if (c == L"ü") return L"ü";
     if (c == L"x") return L"iks";
     if (c == L"y") return L"igrek";
     if (c == L"z") return L"tsett";
