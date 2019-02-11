@@ -1,4 +1,14 @@
-###Eesti keele HTS-kõnesüntesaator
+# Eesti keele HTS-kõnesüntesaator
+
+## HTS-kõnesünteesi skeem
+
+Ehkki süntesaatori väljundkõnelaine segmentaalne kvaliteet pole nii hea kui üksuste valikul põhineval sünteesil, on HTS-sünteesil ka mitu eelist. Esiteks on sünteesitav väljundkõne ladus ja sorav. Teiseks on sünteesiprotsess reaalajas juhitav, võimalik on muuta kõnetempot, häälekõrgust ja -tämbrit. Kolmandaks on sünteesimootor kompaktne, sest peale treenimisprotsessi ei vaja sünteesimootor enam suuri kõnekorpusi.
+
+Loe lisaks: [EKI Kõnesüntees]
+
+[EKI Kõnesüntees]: https://www.eki.ee/heli/index.php?option=com_content&view=article&id=6&Itemid=465#HTS
+
+## Copyrights
 
            The HMM-Based Speech Synthesis Engine "hts_engine API"  
            developed by HTS Working Group                          
@@ -33,13 +43,11 @@
            OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
            POSSIBILITY OF SUCH DAMAGE.
 
-
 ==============================================================================
 
              Morfoloogiline analüsaator ja ühestaja                
                  Copyright (c) 2015, Filosoft                      
               https://github.com/Filosoft/vabamorf                 
-
 
 ==============================================================================
 
@@ -48,21 +56,19 @@
                          Indrek Kiissel
              
          HTK-3.4.1, HTS-2.3.patch, HTS-engine_API_1.10
-             	                                        
 
 ==============================================================================
-####Installimine:<br>
 
-    	Peale lahtipakkimist
+## Installimine
+
+Peale lahtipakkimist
 
         cd synthts_et-master/synthts_et
         autoreconf -vif
         ./configure
         make
 
-
-==============================================================================
-####Kasutamine:<br>
+## Kasutamine
 
 		-f 		[sisendtekst utf8-s] 
 		-o 		[väljund-wav] 
@@ -71,5 +77,5 @@
 		-m 		[hääle nimi, vt kataloogi htsvoices/]
 		-r 	[kõnetempo, double, 0.01-2.76]		
 		
-		näide:
+näide:
 		bin/synthts_et -lex dct/et.dct -lexd dct/et3.dct -o out_tnu.wav -f in.txt -m htsvoices/eki_et_tnu.htsvoice -r 1.1
