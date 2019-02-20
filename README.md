@@ -60,6 +60,11 @@
         ./configure
         make
 
+      Kui Ubuntu versioon on suurem kui 17.04 siis:
+        test -x configure || autoreconf -vif
+        ./configure CC=/usr/bin/gcc CXX=/usr/bin/g++ CFLAGS="-g3 -gdwarf-2" CXXFLAGS="-g3 -gdwarf-2"
+        make
+
 
 ==============================================================================
 ####Kasutamine:<br>
