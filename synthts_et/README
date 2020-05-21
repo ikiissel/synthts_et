@@ -1,3 +1,5 @@
+###Eesti keele HTS-kõnesüntesaator
+
            The HMM-Based Speech Synthesis Engine "hts_engine API"  
            developed by HTS Working Group                          
            http://hts-engine.sourceforge.net/                      
@@ -42,23 +44,29 @@
 ==============================================================================
 
                    Eesti keele HTS-kõnesüntees                     
-             Copyright (c) 2015-16 Eesti Keele Instituut              
-                         Indrek Kiissel                            
-
-             HTK-3.4.1, HTS-2.3.patch, HTS-engine_API_1.10
+         Copyright (c) 2015-2020 Eesti Keele Instituut              
+             
+         HTK-3.4.1, HTS-2.3.2patch, HTS-engine_API_1.10
+             	                                        
 
 ==============================================================================
+####Installimine:<br>
 
-		Peale lahtipakkimist
+    	Peale lahtipakkimist
 
         cd synthts_et-master/synthts_et
         autoreconf -vif
         ./configure
         make
 
+      Kui Ubuntu versioon on suurem kui 17.04 siis:
+        test -x configure || autoreconf -vif
+        ./configure CC=/usr/bin/gcc CXX=/usr/bin/g++ CFLAGS="-g3 -gdwarf-2" CXXFLAGS="-g3 -gdwarf-2"
+        make
+
 
 ==============================================================================
-
+####Kasutamine:<br>
 
 		-f 		[sisendtekst utf8-s] 
 		-o 		[väljund-wav] 
@@ -66,6 +74,6 @@
 		-lexd	[ühestaja sõnastik] 
 		-m 		[hääle nimi, vt kataloogi htsvoices/]
 		-r 	[kõnetempo, double, 0.01-2.76]		
+		
 		näide:
 		bin/synthts_et -lex dct/et.dct -lexd dct/et3.dct -o out_tnu.wav -f in.txt -m htsvoices/eki_et_tnu.htsvoice -r 1.1
-		
