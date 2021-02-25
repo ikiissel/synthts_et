@@ -503,8 +503,8 @@ CFSWString replace_schar (CFSWString c) {
     if (c == L"=") return L"võrdub";
     if (c == L"+") return L"pluss";
     if (c == L"~") return L"tilde";
-    if (c == L"<") return L"suurem kui";
-    if (c == L">") return L"väiksem kui";
+    if (c == L">") return L"suurem kui";
+    if (c == L"<") return L"väiksem kui";
     if (c == L"§") return L"paragraaf";
     if (c == L"(") return L"sulgudes";
     if (c == L"[") return L"nurksulgudes";
